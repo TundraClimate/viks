@@ -1,0 +1,11 @@
+[package]
+name = "viks"
+authors = ["Tundra_Climate <tundra.tundere@gmail.com>"]
+description = "vim-like key crate"
+repository = "https://github.com/TundraClimate/viks"
+license = "MIT"
+version = "0.1.0"
+edition = "2024"
+readme = "README.md"
+
+[dependencies]
