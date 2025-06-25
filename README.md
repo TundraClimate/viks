@@ -18,7 +18,7 @@ assert_eq!(shift_a_key, shift_a_key_alt);
 
 ---
 
-Parse string to `Keymap`(alias for `Vec<Key>`):
+Parse string to `Keymap`(wrapper for `Vec<Key>`):
 
 ```rs
 use viks::Keymap;
