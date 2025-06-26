@@ -247,3 +247,9 @@ impl std::fmt::Debug for Key {
         )
     }
 }
+
+impl PartialEq for Key {
+    fn eq(&self, other: &Self) -> bool {
+        self.code == other.code && self.modifiers == other.modifiers
+    }
+}

@@ -1,5 +1,5 @@
 #[repr(u8)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub(crate) enum KeyCode {
     Backspace = 8,
     Tab = 9,
@@ -76,6 +76,7 @@ pub(crate) enum KeyCode {
     Tilde = 126,
     Delete = 127,
 }
+
 impl KeyCode {
     pub(crate) fn from_ascii(ascii: u8) -> KeyCode {
         if !matches!(ascii, 0..128) {
