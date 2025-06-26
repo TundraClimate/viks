@@ -193,6 +193,68 @@ impl Key {
     }
 }
 
+impl std::fmt::Display for Key {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", {
+            let is_special = matches!(
+                self.code,
+                KeyCode::Enter
+                    | KeyCode::Tab
+                    | KeyCode::Esc
+                    | KeyCode::Space
+                    | KeyCode::Backspace
+                    | KeyCode::Delete
+                    | KeyCode::LessThanSign,
+            );
+            let is_modded = self.modifiers.is_alt() || self.modifiers.is_ctrl();
+            let is_shift = self.modifiers.is_shift();
+            let is_alpha = matches!(self.code as u8, 65..=90);
+
+            let code = match &self.code {
+                KeyCode::Enter => "CR",
+                KeyCode::Tab => "TAB",
+                KeyCode::Esc => "ESC",
+                KeyCode::Space => "SPACE",
+                KeyCode::Backspace => "BS",
+                KeyCode::Delete => "DEL",
+                KeyCode::LessThanSign => "LT",
+
+                keycode if !is_shift && is_alpha => {
+                    &format!("{}", keycode.as_ascii().to_ascii_lowercase())
+                }
+
+                keycode => &format!("{}", keycode.as_ascii()),
+            };
+
+            let code = if self.modifiers.is_alt() {
+                &format!("a-{}", code)
+            } else if self.modifiers.is_ctrl() {
+                &format!("c-{}", code)
+            } else if is_shift && !is_alpha {
+                &format!("s-{}", code)
+            } else {
+                &code.to_string()
+            };
+
+            if is_special || is_modded || is_shift && !is_alpha {
+                format!("<{}>", code)
+            } else {
+                code.to_string()
+            }
+        })
+    }
+}
+
+impl std::fmt::Debug for Key {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Key {{ code: {}, modifiers: {:#05b} }}",
+            self.code as u8, self.modifiers.0 as u8
+        )
+    }
+}
+
 #[repr(u8)]
 #[derive(Clone, Copy)]
 enum KeyCode {
