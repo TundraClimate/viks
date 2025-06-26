@@ -36,15 +36,15 @@ avaliable ascii characters.
 
 Special tags:
 
-| string              | key                   |
-| ------------------- | --------------------- |
-| <enter> or <cr>     | KeyCode::Enter        |
-| <tab>               | KeyCode::Tab          |
-| <esc>               | KeyCode::Esc          |
-| <leader> or <space> | KeyCode::Space        |
-| <bs>                | KeyCode::Backspace    |
-| <del>               | KeyCode::Delete       |
-| <lt>                | KeyCode::LessThanSign |
+| string                  | key                   |
+| ----------------------- | --------------------- |
+| `<enter>` or `<cr>`     | KeyCode::Enter        |
+| `<tab>`                 | KeyCode::Tab          |
+| `<esc>`                 | KeyCode::Esc          |
+| `<leader>` or `<space>` | KeyCode::Space        |
+| `<bs>`                  | KeyCode::Backspace    |
+| `<del>`                 | KeyCode::Delete       |
+| `<lt>`                  | KeyCode::LessThanSign |
 
 Modifier tags:
 
