@@ -44,9 +44,49 @@
 /// Includes [KeyCode] and [KeyModifiers].  
 pub struct Key {}
 
+#[derive(Clone, Copy, PartialEq)]
+/// Wrapper for [KeyModifier].
+///
+/// ## Example
+/// ```
+/// use viks::KeyModifiers;
+/// use viks::KeyModifier;
+///
+/// # fn main() {
+/// let modifiers = KeyModifiers(KeyModifier::Shift | KeyModifier::Alt);
+///
+/// assert!(modifiers.is_shift());
+/// assert!(!modifiers.is_ctrl());
+/// assert!(modifiers.is_alt());
+/// # }
+/// ```
+pub struct KeyModifiers(KeyModifier);
+
+impl KeyModifiers {
+    /// return the shift contains self.
+    pub fn is_shift(&self) -> bool {
+        self.0 & KeyModifier::Shift == KeyModifier::Shift
+    }
+
+    /// return the control contains self.
+    pub fn is_ctrl(&self) -> bool {
+        self.0 & KeyModifier::Control == KeyModifier::Control
+    }
+
+    /// return the control contains self.
+    pub fn is_alt(&self) -> bool {
+        self.0 & KeyModifier::Alt == KeyModifier::Alt
+    }
+
+    /// return the self is none.
+    pub fn is_none(&self) -> bool {
+        self.0 == KeyModifier::None
+    }
+}
+
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq)]
-/// flag of key modifier.
+/// Flag of key modifier.
 ///
 /// It is not recommended to use it alone.  
 /// [Key] uses with [KeyModifiers] on wrapped.
