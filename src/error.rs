@@ -1,5 +1,17 @@
 #[derive(Debug)]
 /// viks error type.
+///
+/// # Example
+///
+/// ```
+/// # use viks::Key;
+///
+/// let key = Key::new("A");
+///
+/// if let Err(err) = key {
+///     eprintln!("incorrect syntax: {}", err);
+/// }
+/// ```
 pub struct Error(pub(crate) String);
 
 impl std::fmt::Display for Error {

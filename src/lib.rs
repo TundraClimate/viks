@@ -254,3 +254,91 @@ impl PartialEq for Key {
         self.code == other.code && self.modifiers == other.modifiers
     }
 }
+
+#[derive(Clone, PartialEq)]
+/// Wrapper of [Vec]<[Key]>.
+///
+/// This only has parse func, please use `as_vec` to access to inner.
+///
+/// # Example
+///
+/// ```
+/// use viks::Keymap;
+///
+/// # fn main() {
+/// let exit_map = Keymap::new("ZZ").unwrap();
+/// let exit_map_alt = Keymap::new("<s-z>Z").unwrap();
+///
+/// assert_eq!(exit_map, exit_map_alt);
+/// # }
+/// ```
+pub struct Keymap(Vec<Key>);
+
+impl Keymap {
+    /// Create new Keymap.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use viks::Keymap;
+    ///
+    /// # fn main() {
+    /// let exit_map = Keymap::new("ZZ").unwrap();
+    /// let exit_map_alt = Keymap::new("<s-z>Z").unwrap();
+    ///
+    /// assert_eq!(exit_map, exit_map_alt);
+    /// # }
+    /// ```
+    ///
+    /// # Error
+    ///
+    /// Returns an error if the tag is not closed.
+    pub fn new(s: &str) -> self::Result<Self> {
+        let mut in_tag = false;
+        let mut buf = String::new();
+        let mut keys: Vec<Key> = vec![];
+
+        for c in s.chars() {
+            if c == '<' {
+                in_tag = true;
+            }
+
+            if in_tag {
+                buf.push(c);
+            } else {
+                keys.push(Key::new(&c.to_string())?)
+            }
+
+            if c == '>' && in_tag {
+                in_tag = false;
+                keys.push(Key::new(&buf)?);
+                buf.clear();
+            }
+        }
+
+        if in_tag {
+            return Err(Error(String::from("invalid format")));
+        }
+
+        Ok(Keymap(keys))
+    }
+
+    /// Get inner ref.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use viks::Keymap;
+    ///
+    /// # fn main() {
+    /// let keymap = Keymap::new("ZZ").unwrap();
+    ///
+    /// for key in keymap.as_vec().iter() {
+    ///     // ..
+    /// }
+    /// # }
+    /// ```
+    pub fn as_vec(&self) -> &Vec<Key> {
+        &self.0
+    }
+}
