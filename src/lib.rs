@@ -39,10 +39,29 @@
 //! # }
 //! ```
 
+#[derive(Debug)]
+/// viks error type.
+pub struct Error(String);
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::error::Error for Error {}
+
+/// viks result alias.
+pub type Result<T> = std::result::Result<T, Error>;
+
+#[derive(Clone, Copy)]
 /// Minimum unit to use for parsing.
 ///
 /// Includes [KeyCode] and [KeyModifiers].  
-pub struct Key {}
+pub struct Key {
+    code: KeyCode,
+    modifiers: KeyModifiers,
+}
 
 #[repr(u8)]
 #[derive(Clone, Copy)]
