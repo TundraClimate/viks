@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![allow(dead_code)]
 
 //! viks is parser for vim-like key sequence.  
 //! e.g. the *noremap line has unique keymap syntax in `.vimrc`.
