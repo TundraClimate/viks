@@ -342,3 +342,29 @@ impl Keymap {
         &self.0
     }
 }
+
+impl std::fmt::Display for Keymap {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.0
+                .iter()
+                .fold(String::new(), |acc, k| format!("{}{}", acc, k))
+        )
+    }
+}
+
+impl std::fmt::Debug for Keymap {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[{}]",
+            self.0
+                .iter()
+                .map(|k| format!("{:?}", k))
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
+    }
+}
