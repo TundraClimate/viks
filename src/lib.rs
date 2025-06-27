@@ -371,3 +371,90 @@ impl std::fmt::Debug for Keymap {
         )
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn new_key() {
+        let key1 = Key::new("A");
+        let key2 = Key::new(";");
+        let key3 = Key::new("<lt>");
+        let key4 = Key::new("<BS>");
+        let key5 = Key::new("<s-a>");
+        let key6 = Key::new("<a-a>");
+        let key7 = Key::new("<c-a>");
+        let key8 = Key::new("<c-CR>");
+        let key9 = Key::new("<leader>");
+
+        assert!(key1.is_ok());
+        assert!(key2.is_ok());
+        assert!(key3.is_ok());
+        assert!(key4.is_ok());
+        assert!(key5.is_ok());
+        assert!(key6.is_ok());
+        assert!(key7.is_ok());
+        assert!(key8.is_ok());
+        assert!(key9.is_ok());
+    }
+
+    #[test]
+    fn eq_keys() {
+        let a_key = Key::new("A").unwrap();
+        let a_s_key = Key::new("A").unwrap();
+        let a_a_key = Key::new("<s-a>").unwrap();
+        let a_a_b_key = Key::new("<s-A>").unwrap();
+
+        assert_eq!(a_key, a_s_key);
+        assert_eq!(a_key, a_a_key);
+        assert_eq!(a_a_key, a_a_b_key);
+    }
+
+    #[test]
+    fn invalid_key() {
+        let key1 = Key::new("");
+        let key2 = Key::new("ÿ");
+        let key3 = Key::new("aa");
+        let key4 = Key::new("<BOO>");
+        let key5 = Key::new("<B");
+        let key6 = Key::new(" ");
+
+        assert!(key1.is_err());
+        assert!(key2.is_err());
+        assert!(key3.is_err());
+        assert!(key4.is_err());
+        assert!(key5.is_err());
+        assert!(key6.is_err());
+    }
+
+    #[test]
+    fn new_keymap() {
+        let keys1 = Keymap::new("NewYonk");
+        let keys2 = Keymap::new("<s-Z>Z");
+        let keys3 = Keymap::new("<lt>HappyNewYear>");
+        let keys4 = Keymap::new("<a-~><c-#><s-&>");
+        let keys5 = Keymap::new("<leader><cr>");
+
+        assert!(keys1.is_ok());
+        assert!(keys2.is_ok());
+        assert!(keys3.is_ok());
+        assert!(keys4.is_ok());
+        assert!(keys5.is_ok());
+    }
+
+    #[test]
+    fn eq_keymaps() {
+        let keys1 = Keymap::new("<cr>HiWorld<enter>").unwrap();
+        let keys2 = Keymap::new("<enter>HiWorld<cr>").unwrap();
+
+        assert_eq!(keys1, keys2);
+    }
+
+    #[test]
+    fn invalid_keymap() {
+        let keymap = Keymap::new("<leader");
+
+        assert!(keymap.is_err());
+    }
+}
