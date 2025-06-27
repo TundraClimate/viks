@@ -44,6 +44,9 @@ mod code;
 mod error;
 mod modifier;
 
+#[cfg(feature = "serde")]
+pub mod serde_impl;
+
 use code::KeyCode;
 pub use error::{Error, Result};
 use modifier::{KeyModifier, KeyModifiers};
