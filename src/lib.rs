@@ -457,4 +457,75 @@ mod tests {
 
         assert!(keymap.is_err());
     }
+
+    #[test]
+    fn display_key() {
+        let key1 = Key::new("A").unwrap();
+        let key2 = Key::new(";").unwrap();
+        let key3 = Key::new("<lt>").unwrap();
+        let key4 = Key::new("<leader>").unwrap();
+        let key5 = Key::new("<DEL>").unwrap();
+        let key6 = Key::new("<Enter>").unwrap();
+
+        assert_eq!(key1.to_string(), "A".to_string());
+        assert_eq!(key2.to_string(), ";".to_string());
+        assert_eq!(key3.to_string(), "<LT>".to_string());
+        assert_eq!(key4.to_string(), "<SPACE>".to_string());
+        assert_eq!(key5.to_string(), "<DEL>".to_string());
+        assert_eq!(key6.to_string(), "<CR>".to_string());
+    }
+
+    #[test]
+    fn debug_key() {
+        let key1 = Key::new("A").unwrap();
+        let key2 = Key::new(";").unwrap();
+        let key3 = Key::new("<CR>").unwrap();
+        let key4 = Key::new("<a-lt>").unwrap();
+
+        assert_eq!(
+            format!("{:?}", key1),
+            "Key { code: 65, modifiers: 0b001 }".to_string()
+        );
+        assert_eq!(
+            format!("{:?}", key2),
+            "Key { code: 59, modifiers: 0b000 }".to_string()
+        );
+        assert_eq!(
+            format!("{:?}", key3),
+            "Key { code: 13, modifiers: 0b000 }".to_string()
+        );
+        assert_eq!(
+            format!("{:?}", key4),
+            "Key { code: 60, modifiers: 0b100 }".to_string()
+        );
+    }
+
+    #[test]
+    fn display_keymap() {
+        let keys1 = Keymap::new("<leader><CR>").unwrap();
+        let keys2 = Keymap::new("<lt>abAs<s-b>").unwrap();
+
+        assert_eq!(keys1.to_string(), "<SPACE><CR>");
+        assert_eq!(keys2.to_string(), "<LT>abAsB");
+    }
+
+    #[test]
+    fn debug_keymap() {
+        let keys1 = Keymap::new("aa").unwrap();
+        let keys2 = Keymap::new("<lt>>").unwrap();
+        let keys3 = Keymap::new("<cr>,").unwrap();
+
+        assert_eq!(
+            format!("{:?}", keys1),
+            "[Key { code: 65, modifiers: 0b000 }, Key { code: 65, modifiers: 0b000 }]".to_string()
+        );
+        assert_eq!(
+            format!("{:?}", keys2),
+            "[Key { code: 60, modifiers: 0b000 }, Key { code: 62, modifiers: 0b000 }]".to_string()
+        );
+        assert_eq!(
+            format!("{:?}", keys3),
+            "[Key { code: 13, modifiers: 0b000 }, Key { code: 44, modifiers: 0b000 }]".to_string()
+        );
+    }
 }
