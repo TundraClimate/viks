@@ -25,7 +25,7 @@ use viks::Keymap;
 
 let zz_map = Keymap::new("zz").unwrap();
 let exit_map = Keymap::new("ZZ").unwrap();
-let exit_map_alt = Keymap::new("<s-z><s-z>");
+let exit_map_alt = Keymap::new("<s-z><s-z>").unwrap();
 
 assert_eq!(exit_map, exit_map_alt);
 ```
