@@ -372,6 +372,12 @@ impl std::fmt::Debug for Keymap {
     }
 }
 
+impl From<Vec<Key>> for Keymap {
+    fn from(value: Vec<Key>) -> Self {
+        Self(value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
