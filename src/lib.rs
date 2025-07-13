@@ -261,17 +261,17 @@ impl std::fmt::Display for Key {
             };
 
             let code = if self.modifiers.is_alt() {
-                &format!("a-{}", code)
+                &format!("a-{code}")
             } else if self.modifiers.is_ctrl() {
-                &format!("c-{}", code)
+                &format!("c-{code}")
             } else if is_shift && !is_alpha {
-                &format!("s-{}", code)
+                &format!("s-{code}")
             } else {
                 &code.to_string()
             };
 
             if is_special || is_modded || is_shift && !is_alpha {
-                format!("<{}>", code)
+                format!("<{code}>")
             } else {
                 code.to_string()
             }
@@ -390,7 +390,7 @@ impl std::fmt::Display for Keymap {
             "{}",
             self.0
                 .iter()
-                .fold(String::new(), |acc, k| format!("{}{}", acc, k))
+                .fold(String::new(), |acc, k| format!("{acc}{k}"))
         )
     }
 }
@@ -402,7 +402,7 @@ impl std::fmt::Debug for Keymap {
             "[{}]",
             self.0
                 .iter()
-                .map(|k| format!("{:?}", k))
+                .map(|k| format!("{k:?}"))
                 .collect::<Vec<_>>()
                 .join(", ")
         )
@@ -526,19 +526,19 @@ mod tests {
         let key4 = Key::new("<a-lt>").unwrap();
 
         assert_eq!(
-            format!("{:?}", key1),
+            format!("{key1:?}"),
             "Key { code: 65, modifiers: 0b001 }".to_string()
         );
         assert_eq!(
-            format!("{:?}", key2),
+            format!("{key2:?}"),
             "Key { code: 59, modifiers: 0b000 }".to_string()
         );
         assert_eq!(
-            format!("{:?}", key3),
+            format!("{key3:?}"),
             "Key { code: 13, modifiers: 0b000 }".to_string()
         );
         assert_eq!(
-            format!("{:?}", key4),
+            format!("{key4:?}"),
             "Key { code: 60, modifiers: 0b100 }".to_string()
         );
     }
@@ -559,15 +559,15 @@ mod tests {
         let keys3 = Keymap::new("<cr>,").unwrap();
 
         assert_eq!(
-            format!("{:?}", keys1),
+            format!("{keys1:?}"),
             "[Key { code: 65, modifiers: 0b000 }, Key { code: 65, modifiers: 0b000 }]".to_string()
         );
         assert_eq!(
-            format!("{:?}", keys2),
+            format!("{keys2:?}"),
             "[Key { code: 60, modifiers: 0b000 }, Key { code: 62, modifiers: 0b000 }]".to_string()
         );
         assert_eq!(
-            format!("{:?}", keys3),
+            format!("{keys3:?}"),
             "[Key { code: 13, modifiers: 0b000 }, Key { code: 44, modifiers: 0b000 }]".to_string()
         );
     }
