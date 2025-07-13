@@ -188,6 +188,43 @@ impl Key {
             modifiers: KeyModifiers(modifier),
         })
     }
+
+    /// Returns `true` if this `Key` is the alphabetic.
+    ///
+    /// # Example
+    /// ```
+    /// # use viks::Key;
+    /// # fn main() {
+    /// assert!(Key::new("a").unwrap().is_alpha());
+    /// assert!(Key::new("<c-a>").unwrap().is_alpha());
+    /// assert!(Key::new("A").unwrap().is_alpha());
+    /// assert!(!Key::new("~").unwrap().is_alpha());
+    /// assert!(!Key::new("1").unwrap().is_alpha());
+    /// assert!(!Key::new(":").unwrap().is_alpha());
+    /// # }
+    /// ```
+    pub fn is_alpha(&self) -> bool {
+        self.code.as_ascii().is_uppercase()
+    }
+
+    /// Returns `true` if this `Key` code in '0'..='9'.
+    ///
+    /// # Example
+    /// ```
+    /// # use viks::Key;
+    /// # fn main() {
+    /// assert!(!Key::new("a").unwrap().is_digit());
+    /// assert!(!Key::new("<c-a>").unwrap().is_digit());
+    /// assert!(!Key::new("A").unwrap().is_digit());
+    /// assert!(!Key::new("~").unwrap().is_digit());
+    /// assert!(Key::new("1").unwrap().is_digit());
+    /// assert!(Key::new("9").unwrap().is_digit());
+    /// assert!(!Key::new(":").unwrap().is_digit());
+    /// # }
+    /// ```
+    pub fn is_digit(&self) -> bool {
+        self.code.as_ascii().is_ascii_digit()
+    }
 }
 
 impl std::fmt::Display for Key {
