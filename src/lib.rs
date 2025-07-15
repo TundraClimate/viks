@@ -104,35 +104,35 @@ impl Key {
         use std::str::FromStr;
 
         if !tag.is_ascii() {
-            return Err(Error(String::from("unsupported key format")));
+            return Err(Error::new(tag, "unsupported key format"));
         }
 
         if tag.is_empty() {
-            return Err(Error(String::from("format is empty")));
+            return Err(Error::new(tag, "format is empty"));
         }
 
         if tag.len() == 1 {
-            let Ok(tag) = char::from_str(tag) else {
-                return Err(Error(String::from("unsupported key format")));
+            let Ok(tag_char) = char::from_str(tag) else {
+                return Err(Error::new(tag, "unsupported key format"));
             };
 
-            let modifier = if tag.is_ascii_uppercase() {
+            let modifier = if tag_char.is_ascii_uppercase() {
                 KeyModifier::Shift
             } else {
                 KeyModifier::None
             };
 
-            let tag = tag.to_ascii_uppercase();
+            let tag_uppercase = tag_char.to_ascii_uppercase();
 
-            let code = match tag {
-                'A'..='Z' => KeyCode::from_ascii(tag as u8),
+            let code = match tag_uppercase {
+                'A'..='Z' => KeyCode::from_ascii(tag_uppercase as u8),
                 '!' | '"' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+' | '?' | '_'
                 | '`' | '|' | '~' | '{' | '}' | '-' | '[' | ']' | ',' | '.' | '/' | ':' | ';'
-                | '>' | '=' | '@' | '\\' | '^' => KeyCode::from_ascii(tag as u8),
+                | '>' | '=' | '@' | '\\' | '^' => KeyCode::from_ascii(tag_uppercase as u8),
 
-                tag if tag.is_ascii_digit() => KeyCode::from_ascii(tag as u8),
+                tag_char if tag_char.is_ascii_digit() => KeyCode::from_ascii(tag_char as u8),
 
-                _ => return Err(Error(String::from("unsupported key format"))),
+                _ => return Err(Error::new(tag, "unsupported key format")),
             };
 
             return Ok(Key {
@@ -144,7 +144,7 @@ impl Key {
         let is_special = tag.starts_with("<") && tag.ends_with(">");
 
         if !is_special || tag.len() == 2 {
-            return Err(Error(String::from("unsupported key format")));
+            return Err(Error::new(tag, "unsupported key format"));
         }
 
         let is_modded = tag.chars().nth(2).is_some_and(|c| c == '-');
@@ -180,7 +180,7 @@ impl Key {
             "bs" => KeyCode::Backspace,
             "del" => KeyCode::Delete,
             "lt" => KeyCode::LessThanSign,
-            _ => return Err(Error(String::from("unsupported key format"))),
+            _ => return Err(Error::new(tag, "unsupported key format")),
         };
 
         Ok(Key {
@@ -357,7 +357,7 @@ impl Keymap {
         }
 
         if in_tag {
-            return Err(Error(String::from("invalid format")));
+            return Err(Error::new(s, "invalid format"));
         }
 
         Ok(Keymap(keys))
