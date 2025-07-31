@@ -1,4 +1,4 @@
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub(crate) struct KeyModifiers(pub(crate) KeyModifier);
 
 impl KeyModifiers {
@@ -16,18 +16,12 @@ impl KeyModifiers {
 }
 
 #[repr(u8)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) enum KeyModifier {
     Shift = 0b0001,
     Control = 0b0010,
     Alt = 0b0100,
     None = 0b0000,
-}
-
-impl PartialEq for KeyModifier {
-    fn eq(&self, other: &Self) -> bool {
-        *self as u8 == *other as u8
-    }
 }
 
 impl std::ops::BitAnd for KeyModifier {

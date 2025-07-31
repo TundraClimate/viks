@@ -51,7 +51,7 @@ use code::KeyCode;
 pub use error::{Error, Result};
 use modifier::{KeyModifier, KeyModifiers};
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 /// Minimum unit to use for parsing.
 ///
 /// ## Example
@@ -289,13 +289,7 @@ impl std::fmt::Debug for Key {
     }
 }
 
-impl PartialEq for Key {
-    fn eq(&self, other: &Self) -> bool {
-        self.code == other.code && self.modifiers == other.modifiers
-    }
-}
-
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 /// Wrapper of [Vec]<[Key]>.
 ///
 /// This only has parse func, please use `as_vec` to access to inner.

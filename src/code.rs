@@ -1,5 +1,5 @@
 #[repr(u8)]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub(crate) enum KeyCode {
     Backspace = 8,
     Tab = 9,
